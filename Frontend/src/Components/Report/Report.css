@@ -1,0 +1,11 @@
+.custom-datatable-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .custom-datatable-scrollable {
+    max-height: 500px; /* Set the maximum height for scrollability */
+    overflow-y: auto;
+  }
+  
