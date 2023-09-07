@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../Redux/Authslice';
 
-
+import bgImg from '../assets/images/01-cargo-vs-freight.jpg'
 
 
 const Login = () => {
@@ -44,7 +44,11 @@ const Login = () => {
     };
 
     return (
-        <section className="vh-100 gradient-custom" style={{ backgroundImage: `url(01-cargo-vs-freight.jpg)`, backgroundSize: 'cover' }}>
+        <section className="vh-100 gradient-custom" style={{
+            backgroundImage: `url(${bgImg})`,
+            backgroundSize: 'cover',
+          }}
+          >
             <div className="container py-5 h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-12 col-md-8 col-lg-6 col-xl-5">

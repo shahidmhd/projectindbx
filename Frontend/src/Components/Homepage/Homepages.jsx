@@ -1,7 +1,7 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
+import Bgcargo from '../../assets/images/cargo.jpg'
 const Homepage = () => {
   return (
     <>
@@ -12,7 +12,7 @@ const Homepage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '100vh',
-          backgroundImage: 'url(cargo.jpg)', // Replace with the actual path to your image
+          backgroundImage: `url(${Bgcargo})`, // Replace with the actual path to your image
           backgroundSize: 'cover', // This ensures the image covers the entire container
         }}
       >
