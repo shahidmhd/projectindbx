@@ -25,66 +25,80 @@ const Printing = ({ invoiceData }) => {
   });
 
   return (
-    <div className="page-content container pt-5">
+    <div className="container-fluid">
       <div className="row justify-content-center">
-        <div className="col-12 col-lg-8" >
-          <div className="container border p-3 mx-auto" ref={componentRef} >
-            <div className="row" >
-              <div className="col-12 text-center mb-3 ">
-                <span className="text-default-d3" style={{ fontSize: "2em", fontWeight: "bold" }}>INDBX PRIVATE LIMITED</span>
+        <div className="col-xl-8">
+          <div className="card mx-auto">
+            <div className="card-body"></div>
+
+            <div className="container mb-5 mt-3">
+              <div className="row d-flex align-items-baseline">
+                <div className="col-xl-9">
+                  <p style={{ color: '#7e8d9f', fontSize: '20px' }}>
+                    Invoice  <strong>Details</strong>
+                  </p>
+                </div>
+                <div className="col-xl-3 float-end">
+                  <a onClick={handlePrint} className="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark">
+                    <i className="fas fa-print text-primary"></i> Print
+                  </a>
+                </div>
+                <hr />
               </div>
 
-              <div className="col-12 text-center">
-                <span className="text-default-d3">KP 14/432, CHULLIKKAPARAMBA,</span><br />
-                <span className="text-default-d3">CHERUVADI, Kozhikode, Kerala, 673661</span><br />
-                <span className='text-default-d3'>GSTIN: 32AAGCI3195M1ZA</span>
-              </div>
-            </div>
+              <div className="container" ref={componentRef}>
+                <div className="col-md-12">
+                  <div className="text-center">
+                    <span className="text-default-d3" style={{ fontSize: "2em", fontWeight: "bold" }}>INDBX PRIVATE LIMITED</span>
+                    <p className="pt-0"> 11-624 NATIONAL TOWERS<br />
+                      VIP ROAD  IN
+                      VAPALASSERY P.O,NEDMBASSERRY<br />
+                      GSTIN: 32AAGCI3195M1ZA</p>
 
-            <div className="row mt-4">
-              <div className="col-sm-6">
-                <div>
-                  <div>
-                    <span className="font-weight-bold">Company Name :</span>
-                    {invoiceData?.selectedCompanyId?.companyname ? invoiceData.selectedCompanyId.companyname : ''}
 
                   </div>
-
-                  <div><span className="font-weight-bold">Box No:</span> {invoiceData?.boxNo}</div>
-                  <div><span className="font-weight-bold">Total Weight :</span> {invoiceData?.totalWeight}</div>
-                  <div><span className="font-weight-bold">AirWayBill No :</span> {invoiceData?.airwayBillNo}</div>
                 </div>
-              </div>
 
-              <div className="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
-                <div className='print-date'>
-                  <hr className="d-sm-none" />
-                  <div className="m2">
-                    <div className="my-2">
-                      <div><span className="font-weight-bold">Date :</span> {formatDate(invoiceData?.selectedDate)}</div>
-                    </div>
-                    <div className="my-2">
-                      <span className="font-weight-bold">Invoice No:</span> {invoiceData?.invoiceNumber}
-                    </div>
+                <div className="row">
+                  <div className="col-xl-8">
+                    <ul className="list-unstyled">
+                      <li style={{color:'black'}}>
+                        Company Name: <span className="text-muted">  {invoiceData?.selectedCompanyId?.companyname ? invoiceData.selectedCompanyId.companyname : ''}</span>
+                      </li>
+                      <li style={{color:'black'}}>Box No: <span className="text-muted ">{invoiceData?.boxNo}</span></li>
+                      <li style={{color:'black'}}>Total Weight :<span className="text-muted">{invoiceData?.totalWeight}</span></li>
+                      <li style={{color:'black'}}>Airway BillNo :<span className="text-muted">{invoiceData?.airwayBillNo}</span></li>
+                    </ul>
+                  </div>
+                  <div className="col-xl-4">
+                    <ul className="list-unstyled">
+                      <li className="text-muted">
+                        <i className="fas fa-circle" style={{ color: '#84B0CA' }}></i>{' '}
+                        <span className="fw-bold">Date:</span>{formatDate(invoiceData?.selectedDate)}
+                      </li>
+                      <li className="text-muted">
+                        <i className="fas fa-circle" style={{ color: '#84B0CA' }}></i>{' '}
+                        <span className="fw-bold">Invoice No: </span>{invoiceData?.invoiceNumber}
+                      </li>
+
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="mt-5">
-              <table className="table table-striped table-borderless">
-                <thead style={{ backgroundColor: "#84B0CA" }} className="text-white">
-                  <tr>
-                    <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>No</th>
+                <div className="row my-2 mx-1 justify-content-center">
+                  <table className="table table-striped table-borderless">
+                    <thead style={{ backgroundColor: '#84B0CA' }} className="text-white">
+                      <tr>
+                      <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>No</th>
                     <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>Service Name</th>
                     <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>HSN Code</th>
                     <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>Weight</th>
                     <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>Amount</th>
                     <th scope="col" style={{ backgroundColor: "black", color: 'white' }}>Total</th>
-                  </tr>
-                </thead>
-                <tbody className="text-95 text-secondary-d3">
-                  {invoiceData?.tableRows && invoiceData?.tableRows.map((row, index) => (
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {invoiceData?.tableRows && invoiceData?.tableRows.map((row, index) => (
                     <tr key={row._id}>
                       <td>{index + 1}</td>
                       <td>{row.serviceName}</td>
@@ -94,58 +108,55 @@ const Printing = ({ invoiceData }) => {
                       <td>{row.total}</td>
                     </tr>
                   ))}
-                  {/* Add more rows here */}
-                </tbody>
-              </table>
-              <div style={{ paddingLeft: "35em" }}>
-                <div className="row my-2">
-                  <div className="col-7 text-right">SubTotal</div>
-                  <div className="col-5">₹{invoiceData?.subtotal}</div>
+                    </tbody>
+                  </table>
                 </div>
-                <div className="row my-2">
-                  <div className="col-7 text-right">GST 18%</div>
-                  <div className="col-5">₹{invoiceData?.gst18}</div>
+                <div className="row">
+                  <div className="col-md-8">
+                    <p className="ms-3">Add additional notes and payment information</p>
+                  </div>
+                  <div className="col-md-4 d-flex align-items-center">
+                    <div className="ms-md-auto">
+                      <ul className="list-unstyled mb-0">
+                        <li className="text-muted">
+                          <span className="text-black me-4">SubTotal</span>₹{invoiceData?.subtotal}
+                        </li>
+                        <li className="text-muted mt-2">
+                          <span className="text-black me-4">GST(18%)</span>₹{invoiceData?.gst18}
+                        </li>
+                        <li className="text-muted mt-2">
+                          <span className="text-black me-4">SGST(9%)</span>₹{invoiceData?.SGST}
+                        </li>
+                        <li className="text-muted mt-2">
+                          <span className="text-black me-4">CGST(9%)</span>₹{invoiceData?.CGST}
+                        </li>
+                      </ul>
+                      <p className="text-black mt-3 mt-md-0">
+                        <span className="text-black me-3 fw-bold" style={{ fontSize: '1.5em' }}>Total </span>
+                        <span style={{ fontSize: '25px' }}>₹{invoiceData?.totalAmount}</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="row my-2">
-                  <div className="col-7 text-right">SGST 9%</div>
-                  <div className="col-5">₹{invoiceData?.SGST}</div>
-                </div>
-                <div className="row my-2">
-                  <div className="col-7 text-right">CGST 9%</div>
-                  <div className="col-5">₹{invoiceData?.CGST}</div>
-                </div>
-                <div className="row my-2">
-                  <div className="col-7 text-right" style={{ fontWeight: "bold" }}>Total Amount</div>
-                  <div className="col-5" style={{ fontWeight: "bold" }}>₹{invoiceData?.totalAmount}</div>
+
+                <hr />
+                <div className="row">
+                  <div className="col-xl-10">
+                    <p>Thank you for your purchase</p>
+                  </div>
+                  <div className="col-xl-2">
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* <hr /> */}
-
-            {/* <div className="d-flex justify-content-between align-items-center mt-3">
-              <span className="text-secondary-d1 text-105">Thank you for your purchase</span>
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handlePrint}
-              >
-                Print
-              </button>
-            </div> */}
           </div>
-          <div className="d-flex justify-content-between align-items-center mt-3">
-              <span className="text-secondary-d1 text-105"></span>
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handlePrint}
-              >
-                Print
-              </button>
-            </div>
         </div>
       </div>
     </div>
+
+
   );
 };
 
 export default Printing;
+
