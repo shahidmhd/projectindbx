@@ -24,6 +24,8 @@ const Printing = ({ invoiceData }) => {
     content: () => componentRef.current,
   });
 
+
+
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
