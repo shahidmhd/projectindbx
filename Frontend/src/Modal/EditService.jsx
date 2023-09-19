@@ -16,17 +16,17 @@ const EditService = ({ showeditModal, setShoweditModal, Service, render, setrend
   // Function to update CGST and SGST based on GST
   const updateCGSTAndSGST = (gstValue) => {
     const gst = parseFloat(gstValue);
-    const cgst = gst / 2;
-    const sgst = gst / 2;
-    setValue('CGST', cgst.toFixed(2)); // Set CGST value
-    setValue('SGST', sgst.toFixed(2)); // Set SGST value
+    // const cgst = gst / 2;
+    // const sgst = gst / 2;
+    // setValue('CGST', cgst.toFixed(2)); // Set CGST value
+    // setValue('SGST', sgst.toFixed(2)); // Set SGST value
   };
 
   const onSubmit = async (data) => {
     // Your logic to handle the form data and update the service should go here.
     data.GST = parseFloat(data.GST);
-    data.SGST = parseFloat(data.SGST);
-    data.CGST = parseFloat(data.CGST);
+    // data.SGST = parseFloat(data.SGST);
+    // data.CGST = parseFloat(data.CGST);
     // data.UOM = parseInt(data.UOM, 10);
     data.Rate = parseFloat(data.Rate);
     const response = await editservice(data)
@@ -146,7 +146,7 @@ const EditService = ({ showeditModal, setShoweditModal, Service, render, setrend
                 </div>
 
 
-                <div className='row mb-4'>
+                {/* <div className='row mb-4'>
                   <div className='col'>
                     <div className='form-outline'>
                       <Controller
@@ -177,7 +177,7 @@ const EditService = ({ showeditModal, setShoweditModal, Service, render, setrend
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className='row mb-4'>
                   <div className='col'>

@@ -16,16 +16,6 @@ const Servicechema=new mongoose.Schema({
         required: true,
         trim: true
     },
-    SGST: {
-        type:Number,
-        required: true,
-        trim: true
-    },
-    CGST: {
-        type:Number,
-        required: true,
-        trim: true
-    },
    Rate: {
         type:Number,
         required: true

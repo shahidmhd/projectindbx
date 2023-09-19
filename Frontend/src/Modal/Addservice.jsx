@@ -15,8 +15,6 @@ const Addservice = ({ showModal, setShowModal, render, setrender }) => {
 
     const onSubmit = async (data) => {
         data.GST = parseFloat(gstValue);
-        data.SGST = parseFloat(data.SGST);
-        data.CGST = parseFloat(data.CGST);
         data.Rate = parseFloat(data.Rate);
         const response = await Addservicedata(data)
         if (response.success) {
@@ -31,20 +29,6 @@ const Addservice = ({ showModal, setShowModal, render, setrender }) => {
     const handleGSTChange = (event) => {
         const value = event.target.value;
         setGstValue(value);
-
-        if (value === '') {
-            // If GST value is empty, set CGST and SGST to 0
-            setValue('CGST', '0.00');
-            setValue('SGST', '0.00');
-        } else {
-            const gst = parseFloat(value);
-            if (!isNaN(gst)) {
-                const cgst = gst / 2;
-                const sgst = gst / 2;
-                setValue('CGST', cgst.toFixed(2));
-                setValue('SGST', sgst.toFixed(2));
-            }
-        }
     };
 
     return (
@@ -145,7 +129,7 @@ const Addservice = ({ showModal, setShowModal, render, setrender }) => {
                                     />
                                 </div>
                                 
-                                <div className='row mb-4'>
+                                {/* <div className='row mb-4'>
                                     <div className='col'>
                                         <div className='form-outline'>
                                             <Controller
@@ -176,7 +160,7 @@ const Addservice = ({ showModal, setShowModal, render, setrender }) => {
                                             />
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className='row mb-4'>
                                     <div className='col'>

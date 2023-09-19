@@ -28,7 +28,6 @@ export const getnotdeletedallcompanies = async () => {
 
 export const editcompany = async (payload) => {
     try {
-        console.log(payload._id);
         const response = await instance.patch(`/api/users/company/${payload._id}`, payload);
         return response.data
     } catch (err) {

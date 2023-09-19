@@ -54,7 +54,6 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
     const handleServiceChange = (index, serviceId) => {
         const selectedServiceId = serviceId;
         const selectedServiceData = servicedetails.find((service) => service._id === selectedServiceId);
-        console.log(selectedServiceData, "selected data");
 
         if (selectedServiceData) {
             const updatedTableRows = [...tableRows]; // Clone the tableRows array
@@ -63,7 +62,8 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
                 serviceName: selectedServiceData.servicename,
                 HSNCode: selectedServiceData.HSNCode,
                 amount: selectedServiceData.Rate,
-                total: selectedServiceData.Rate * tableRows[index].weight
+                total: selectedServiceData.Rate * tableRows[index].weight,
+                Gst: selectedServiceData?.GST / 100
             };
 
             settableRows(updatedTableRows); // Update the tableRows state
@@ -104,18 +104,23 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
         const totalWeight = tableRows.reduce((totalWeight, row) => {
             return totalWeight + (row.weight || 0);
         }, 0);
+        const totalGst = tableRows.reduce((Gst, row) => {
+            const rowGst = row.Gst || 0;
+            return Gst + (rowGst * row.total); // Calculate the GST for each row and add it to the total GST
+        }, 0);
 
-        const gst18 = subtotal * 0.18;
-        const CGST = gst18 / 2
-        const SGST = gst18 / 2
+        // const gst18 = subtotal * 0.18;
+        const gst18 = totalGst;
+        // const CGST = gst18 / 2
+        // const SGST = gst18 / 2
         const totalAmount = subtotal + gst18
 
         const updatedInvoiceData = {
             ...invoiceData,
             subtotal: parseFloat(subtotal.toFixed(2)),
             gst18: parseFloat(gst18.toFixed(2)),
-            CGST: parseFloat(CGST.toFixed(2)),
-            SGST: parseFloat(SGST.toFixed(2)),
+            // CGST: parseFloat(CGST.toFixed(2)),
+            // SGST: parseFloat(SGST.toFixed(2)),
             totalAmount: parseFloat(totalAmount.toFixed(2)),
             totalWeight: parseFloat(totalWeight.toFixed(2)),
         };
@@ -140,6 +145,7 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
             weight: 0,
             amount: 0,
             total: 0,
+            Gst:0,
         };
 
         settableRows([...tableRows, newRow]);
@@ -204,8 +210,6 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
 
         const savedData = {
             _id: invoiceData._id,
-            CGST: invoiceDatas.CGST,
-            SGST: invoiceDatas.SGST,
             airwayBillNo: Airwaybillno,
             boxNo: boxNo,
             gst18: invoiceDatas.gst18,
@@ -219,7 +223,6 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
             totalWeight: invoiceDatas.totalWeight
         };
 
-        console.log(savedData,"shahid");
         const response = await EditINVOICEdata(savedData);
         if (response.success) {
             toast.success('Invoice edited successfully!', {
@@ -247,10 +250,11 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
                         <div className="p-3 d-flex flex-column-reverse flex-md-row justify-content-between">
                             <div className="mb-3 mb-md-0">
                                 <p>
-                                    KP 14/432, CHULLIKKAPARAMBA,<br />
-                                    <span style={{ fontWeight: 300 }}>CHERUVADI, Kozhikode, Kerala, 673661</span>
+                                11-624 NATIONAL TOWERS,<br />
+                                    <span style={{ fontWeight: 300 }}>VIP ROAD  IN
+                      VAPALASSERY P.O,NEDMBASSERRY</span>
                                 </p>
-                                <p>GSTIN:32AAGCI3195M1ZA</p>
+                                <p>GSTIN: 32AAGCI3195M1ZA</p>
                             </div>
                             <div className="date-input mt-3 mt-md-0">
                                 <DatePicker selected={selectedDate} onChange={handleDateChange} dateFormat="dd/MM/yyyy" placeholderText="Select a date" className='datepicker' /><br />
@@ -355,6 +359,9 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
                                             Total
                                         </th>
                                         <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
+                                            Gst
+                                        </th>
+                                        <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
                                             Action
                                         </th>
                                         <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
@@ -408,6 +415,7 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
                                                 />
                                             </td>
                                             <td>{row.total || 0}</td>
+                                            <td>{row.Gst * row.total || 0}</td>
                                             <td>
                                                 <button
                                                     className='btn'
@@ -441,16 +449,10 @@ const Details = ({ companydetails, servicedetails, invoiceData }) => {
                         <MDBCol xl="3">
                             <MDBTypography listUnStyled>
                                 <li className="text-muted ms-3">
-                                    <span className="text-black me-4">SubTotal</span>₹{invoiceDatas?.subtotal}
+                                    <span className="text-black me-4">SubTotal</span>:&nbsp;₹{invoiceDatas?.subtotal}
                                 </li>
                                 <li className="text-muted ms-3 mt-2">
-                                    <span className="text-black me-4">GST 18%</span>₹{invoiceDatas?.gst18}
-                                </li>
-                                <li className="text-muted ms-3 mt-2">
-                                    <span className="text-black me-4">SGST 9%</span>₹{invoiceDatas?.SGST}
-                                </li>
-                                <li className="text-muted ms-3 mt-2">
-                                    <span className="text-black me-4">CGST 9%</span>₹{invoiceDatas?.CGST}
+                                    <span className="text-black me-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IGST</span>:&nbsp;₹{invoiceDatas?.gst18}
                                 </li>
                             </MDBTypography>
                             <p className="text-black float-start">

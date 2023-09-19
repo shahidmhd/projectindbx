@@ -27,8 +27,6 @@ const Servicecreation = ({ Service, render, setrender }) => {
       HSNCode: item.HSNCode,
       Rate: item.Rate,
       GST: item.GST,
-      SGST: item.SGST,
-      CGST: item.CGST,
       UOM: item.UOM,
       editButton: <button onClick={() => handleEditClick(item)} style={{ cursor: 'pointer' }} className="btn btn-primary btn-sm">Edit</button>,
       deleteButton: <button onClick={() => {
@@ -74,16 +72,6 @@ const Servicecreation = ({ Service, render, setrender }) => {
           width: 100,
         },
         {
-          label: 'SGST%',
-          field: 'SGST',
-          width: 100,
-        },
-        {
-          label: 'CGST%',
-          field: 'CGST',
-          width: 100,
-        },
-        {
           label: 'UOM(kg)',
           field: 'UOM',
           width: 100,
@@ -123,6 +111,7 @@ const Servicecreation = ({ Service, render, setrender }) => {
           <CDBCard>
             <CDBCardBody>
               <CDBDataTable
+              responsive
                 striped
                 bordered
                 hover

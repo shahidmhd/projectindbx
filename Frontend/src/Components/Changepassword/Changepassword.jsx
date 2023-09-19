@@ -30,7 +30,6 @@ const Changepassword = () => {
     } = useForm();
 
     const onSubmit = async (data) => {
-        console.log(data); // You can handle the form submission here
         try {
             const response = await changepassword(data)
             if (response.success) {
@@ -40,7 +39,6 @@ const Changepassword = () => {
                 toast.error(response.message)
             }
         } catch (err) {
-            console.log(err);
             toast.error("unknown error")
         }
 

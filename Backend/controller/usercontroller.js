@@ -37,7 +37,6 @@ export default {
     changepassword: async (req, res) => {
         try {
             const {newPassword, email } = req.body;
-            console.log(email,newPassword);
             const user = await User.findOne({ email: email }).exec();
             if (!user) {
                 return res.json({ success: false, message: 'User not found' });

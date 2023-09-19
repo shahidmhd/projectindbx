@@ -1,14 +1,6 @@
 import mongoose from 'mongoose';
 
 const invoiceSchema = new mongoose.Schema({
-  CGST: {
-    type: Number,
-    required: true,
-  },
-  SGST: {
-    type: Number,
-    required: true,
-  },
   airwayBillNo: {
     type: String,
     required: true,
@@ -45,6 +37,10 @@ const invoiceSchema = new mongoose.Schema({
   tableRows: [{
     id: {
       type: mongoose.Schema.Types.Mixed,
+      required: true,
+    },
+    Gst:{
+      type: Number,
       required: true,
     },
     serviceName: {

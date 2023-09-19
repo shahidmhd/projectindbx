@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selctedCompantId, setselectedCompanyId] = useState('');
+    const [gstamount, setgstamount] = useState('');
     const [Airwaybillno, setAirwaybillno] = useState('')
     const [tableRows, settableRows] = useState([])
     const [SelectedService, setSelectedService] = useState(null)
@@ -79,7 +80,9 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
             HSNCode: '',
             weight: 0,
             amount: 0,
-            total: 0
+            total: 0,
+            Gst:0,
+            
         }]);
     };
 
@@ -99,9 +102,13 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
                 serviceName: selectedServiceData.servicename,
                 HSNCode: selectedServiceData.HSNCode,
                 amount: selectedServiceData.Rate,
-                total: selectedServiceData.Rate * tableRows[index].weight
+                total: selectedServiceData.Rate * tableRows[index].weight,
+                Gst: selectedServiceData?.GST / 100
             };
-
+           
+           const data=selectedServiceData?.GST
+        //    updatedTableRows.Gst=data/100
+        //    console.log(updatedTableRows,"shha");
             settableRows(updatedTableRows); // Update the tableRows state
             setSelectedService(selectedServiceData);
             setSelectedServiceId(selectedServiceData._id);
@@ -120,17 +127,24 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
             return totalWeight + (row.weight || 0);
         }, 0);
 
-        const gst18 = subtotal * 0.18;
-        const CGST = gst18 / 2
-        const SGST = gst18 / 2
+        const totalGst = tableRows.reduce((Gst, row) => {
+            const rowGst = row.Gst || 0;
+            return Gst + (rowGst * row.total); // Calculate the GST for each row and add it to the total GST
+        }, 0);
+
+
+        // const gst18 = subtotal * 0.18;
+        const gst18 = totalGst;
+        // const CGST = gst18 / 2
+        // const SGST = gst18 / 2
         const totalAmount = subtotal + gst18
 
         const updatedInvoiceData = {
             ...invoiceData,
             subtotal: parseFloat(subtotal.toFixed(2)),
             gst18: parseFloat(gst18.toFixed(2)),
-            CGST: parseFloat(CGST.toFixed(2)),
-            SGST: parseFloat(SGST.toFixed(2)),
+            // CGST: parseFloat(CGST.toFixed(2)),
+            // SGST: parseFloat(SGST.toFixed(2)),
             totalAmount: parseFloat(totalAmount.toFixed(2)),
             totalWeight: parseFloat(totalWeight.toFixed(2)),
         };
@@ -183,13 +197,12 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
             return;
         }
         if (invoiceData.subtotal === 0) {
-            toast.error("Please select a Service", {
+            toast.error("Amount not found select a service", {
                 hideProgressBar: true,
             });
             return;
 
         }
-
 
         const dataToSave = {
             selectedDate: selectedDate,
@@ -201,14 +214,14 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
             tableRows: tableRows,
             subtotal: invoiceData.subtotal,
             gst18: invoiceData.gst18,
-            SGST: invoiceData.SGST,
-            CGST: invoiceData.CGST,
+            // SGST: invoiceData.SGST,
+            // CGST: invoiceData.CGST,
             totalAmount: invoiceData.totalAmount,
             totalWeight: invoiceData.totalWeight,
         };
 
-        // Use 'dataToSave' to save or process the data as needed
-        // Here you can save the data to your backend or do whatever you need with it
+
+
         const response = await AddINVOICEdata(dataToSave);
         if (response.success) {
             toast.success('Invoice saved successfully!', {
@@ -246,10 +259,11 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
                         <div className="p-3 d-flex flex-column-reverse flex-md-row justify-content-between">
                             <div className="mb-3 mb-md-0">
                                 <p>
-                                    KP 14/432, CHULLIKKAPARAMBA,<br />
-                                    <span style={{ fontWeight: 300 }}>CHERUVADI, Kozhikode, Kerala, 673661</span>
+                                11-624 NATIONAL TOWERS<br />
+                                    <span style={{ fontWeight: 300 }}> VIP ROAD  IN
+                      VAPALASSERY P.O,NEDMBASSERRY</span>
                                 </p>
-                                <p>GSTIN:32AAGCI3195M1ZA</p>
+                                <p> GSTIN: 32AAGCI3195M1ZA</p>
                             </div>
                             <div className="date-input mt-3 mt-md-0">
                                 <DatePicker selected={selectedDate} onChange={handleDateChange} dateFormat="dd/MM/yyyy" placeholderText="Select a date" className='datepicker' /><br />
@@ -355,6 +369,9 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
                                             Total
                                         </th>
                                         <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
+                                            Gst
+                                        </th>
+                                        <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
                                             Action
                                         </th>
                                         <th scope="col" style={{ backgroundColor: "#79c8db", color: "white" }}>
@@ -406,6 +423,7 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
                                                 />
                                             </td>
                                             <td>{row.total}</td>
+                                            <td>{row.Gst && row.total ? row.Gst * row.total : ''}</td>
                                             <td>
                                                 <button
                                                     className='btn'
@@ -448,17 +466,17 @@ const Bill = ({ companydetails, servicedetails, invoiceNumber }) => {
                         <MDBCol xl="3">
                             <MDBTypography listUnStyled>
                                 <li className="text-muted ms-3">
-                                    <span className="text-black me-4">SubTotal</span>₹{invoiceData?.subtotal}
+                                    <span className="text-black me-4">SubTotal</span>:&nbsp;₹{invoiceData?.subtotal}
                                 </li>
                                 <li className="text-muted ms-3 mt-2">
-                                    <span className="text-black me-4">GST 18%</span>₹{invoiceData?.gst18}
+                                    <span className="text-black me-4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IGST</span>&nbsp;:&nbsp;₹{invoiceData?.gst18}
                                 </li>
-                                <li className="text-muted ms-3 mt-2">
+                                {/* <li className="text-muted ms-3 mt-2">
                                     <span className="text-black me-4">SGST 9%</span>₹{invoiceData?.SGST}
                                 </li>
                                 <li className="text-muted ms-3 mt-2">
                                     <span className="text-black me-4">CGST 9%</span>₹{invoiceData?.CGST}
-                                </li>
+                                </li> */}
                             </MDBTypography>
                             <p className="text-black float-start">
                                 <span className="text-black me-3">Total Amount</span>

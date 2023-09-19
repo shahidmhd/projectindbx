@@ -1,22 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,Suspense } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import Company from './Pages/Company';
-import Service from './Pages/Service';
+// import Company from './Pages/Company';
+// import Service from './Pages/Service';
 // import Login from './Login/Login';
-import Home from './Pages/Home';
-import Notfound from './Pages/Notfound';
-import Print from './Pages/Print';
-import Invoicetable from './Pages/Invoicetable';
-import Detailpage from './Pages/Detailpage';
+// import Home from './Pages/Home';
+// import Notfound from './Pages/Notfound';
+// import Print from './Pages/Print';
+// import Invoicetable from './Pages/Invoicetable';
+// import Detailpage from './Pages/Detailpage';
 import Loginpage from './Pages/Loginpage';
 import { useSelector } from 'react-redux'
-import Report from './Pages/Report';
-import Billing from './Pages/Billing';
+// import Report from './Pages/Report';
+// import Billing from './Pages/Billing';
 import Changepassword from './Components/Changepassword/Changepassword';
 import { useDispatch } from 'react-redux';
 import { setLogout } from './Redux/Authslice';
 import jwtDecode from 'jwt-decode';
 
+const Home = React.lazy(() => import('./Pages/Home'))
+const Print = React.lazy(() => import('./Pages/Print'))
+const Report = React.lazy(() => import('./Pages/Report'))
+const Billing = React.lazy(() => import('./Pages/Billing'))
+const Detailpage = React.lazy(() => import('./Pages/Detailpage'))
+const Service = React.lazy(() => import('./Pages/Service'))
+const Company = React.lazy(() => import('./Pages/Company'))
+const Notfound = React.lazy(() => import('./Pages/Notfound'))
+const Invoicetable = React.lazy(() => import('./Pages/Invoicetable'))
 
 
 const App = () => {
@@ -88,6 +97,7 @@ if (hasTokenExpired) {
 
   return (
     <>
+    <Suspense>
       < BrowserRouter>
         <Routes>
           <Route
@@ -134,6 +144,7 @@ if (hasTokenExpired) {
           <Route path="*" element={<Notfound />} />
         </Routes>
       </ BrowserRouter>
+      </Suspense>
     </>
   );
 }
